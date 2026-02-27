@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { TASK_STATUSES, TASK_PRIORITIES, STATUS_LABELS, PRIORITY_LABELS } from "@/types/task";
 import { toast } from "./Toast";
@@ -84,7 +85,7 @@ export default function CreateTaskModal() {
         New Task
       </button>
 
-      {isOpen && (
+      {isOpen && createPortal(
         <div className="fixed inset-0 z-50 sm:flex sm:items-center sm:justify-center">
           {/* Backdrop */}
           <div
@@ -206,7 +207,8 @@ export default function CreateTaskModal() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
