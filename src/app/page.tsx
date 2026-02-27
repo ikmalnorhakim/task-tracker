@@ -38,6 +38,28 @@ export default async function DashboardPage({
           </div>
           <CreateTaskModal />
         </div>
+
+        {/* Summary counts */}
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          <div className="glass-subtle rounded-xl p-3 text-center">
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {allTasks.filter(t => t.status === "todo").length}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">To Do</p>
+          </div>
+          <div className="glass-subtle rounded-xl p-3 text-center">
+            <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+              {allTasks.filter(t => t.status === "in_progress").length}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">In Progress</p>
+          </div>
+          <div className="glass-subtle rounded-xl p-3 text-center">
+            <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+              {allTasks.filter(t => t.status === "done").length}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Done</p>
+          </div>
+        </div>
       </div>
 
       {/* Filter card */}
