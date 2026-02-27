@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Tracker Dashboard - Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 100px;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide.active { display: flex; }
+
+    /* Gradient backgrounds per slide type */
+    .slide-title {
+      background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 50%, #0b1120 100%);
+      text-align: center;
+      align-items: center;
+    }
+
+    .slide-content {
+      background: linear-gradient(160deg, #0b1120 0%, #0f172a 100%);
+    }
+
+    .slide-end {
+      background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 50%, #0b1120 100%);
+      text-align: center;
+      align-items: center;
+    }
+
+    /* Decorative gradient orbs */
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #a78bfa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #818cf8, #c084fc);
+      border-radius: 2px;
+      margin-top: 12px;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: #94a3b8;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin: 4px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .tags { margin-top: 24px; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 12px 0;
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      line-height: 1.5;
+    }
+
+    ul li::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: start;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+
+    .card ul li {
+      font-size: 1rem;
+      padding: 8px 0;
+    }
+
+    .highlight {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    .file-tree {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      border: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.8;
+    }
+
+    .file-tree .folder { color: #a5b4fc; }
+    .file-tree .file { color: #94a3b8; }
+    .file-tree .accent { color: #c084fc; }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      right: 40px;
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .nav button {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+
+    .nav button:hover {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .slide-counter {
+      position: fixed;
+      bottom: 38px;
+      left: 40px;
+      font-size: 0.85rem;
+      color: #475569;
+      z-index: 100;
+    }
+
+    /* Demo steps */
+    .demo-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .demo-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .demo-text {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+    }
+
+    .demo-text strong { color: #a5b4fc; }
+
+    .arrow-icon { font-size: 1rem; color: #6366f1; }
+
+    /* Comparison table */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 10px;
+    }
+
+    .compare-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .compare-box h3 {
+      font-size: 1rem;
+      color: #818cf8;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .compare-box p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .emoji { font-size: 1.4rem; margin-right: 6px; }
+
+    @media (max-width: 900px) {
+      .slide { padding: 40px; }
+      h1 { font-size: 2.4rem; }
+      h2 { font-size: 1.6rem; }
+      .two-col { grid-template-columns: 1fr; gap: 24px; }
+      .compare { grid-template-columns: 1fr; }
+      ul li { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide slide-title active" id="slide-1">
+  <p class="subtitle">Onboarding Challenge</p>
+  <h1>Task Tracker Dashboard</h1>
+  <p class="subtitle">A full-stack Kanban-style task management app</p>
+  <div class="tags">
+    <span class="tag">Next.js 15</span>
+    <span class="tag">TypeScript</span>
+    <span class="tag">Tailwind CSS</span>
+    <span class="tag">Neon PostgreSQL</span>
+    <span class="tag">Drizzle ORM</span>
+    <span class="tag">Vercel</span>
+  </div>
+</div>
+
+<!-- SLIDE 2: What I Built -->
+<div class="slide slide-content" id="slide-2">
+  <h2>What I Built</h2>
+  <ul>
+    <li><strong>Kanban dashboard</strong> with 3 columns: To Do, In Progress, Done</li>
+    <li><strong>Full CRUD</strong> &mdash; create, view, edit, and delete tasks</li>
+    <li><strong>Search &amp; filter</strong> by status, priority, and keyword via URL params</li>
+    <li><strong>Sort</strong> by newest, oldest, or priority level</li>
+    <li><strong>Task detail pages</strong> with dynamic routing (/tasks/[id])</li>
+    <li><strong>Glassmorphism UI</strong> &mdash; responsive on mobile and desktop</li>
+    <li><strong>Dark mode toggle</strong> with system, light, and dark options</li>
+    <li><strong>14 passing tests</strong> (Vitest + React Testing Library)</li>
+  </ul>
+</div>
+
+<!-- SLIDE 3: Live Demo Plan -->
+<div class="slide slide-content" id="slide-3">
+  <h2>Live Demo</h2>
+  <div class="demo-step"><div class="demo-num">1</div><div class="demo-text">Open the <strong>dashboard</strong> &mdash; show 3-column Kanban board</div></div>
+  <div class="demo-step"><div class="demo-num">2</div><div class="demo-text">Click <strong>"New Task"</strong> &mdash; create a task via modal form</div></div>
+  <div class="demo-step"><div class="demo-num">3</div><div class="demo-text">Use <strong>quick-move buttons</strong> to change status (optimistic update)</div></div>
+  <div class="demo-step"><div class="demo-num">4</div><div class="demo-text">Click a card &rarr; <strong>task detail page</strong> with edit form</div></div>
+  <div class="demo-step"><div class="demo-num">5</div><div class="demo-text"><strong>Edit</strong> the task, save &mdash; redirected back with toast notification</div></div>
+  <div class="demo-step"><div class="demo-num">6</div><div class="demo-text"><strong>Delete</strong> a task with confirmation dialog</div></div>
+  <div class="demo-step"><div class="demo-num">7</div><div class="demo-text">Use <strong>search, filters, sort</strong> &mdash; note URL params update</div></div>
+  <div class="demo-step"><div class="demo-num">8</div><div class="demo-text">Toggle <strong>dark mode</strong> &mdash; show mobile responsive view</div></div>
+</div>
+
+<!-- SLIDE 4: Architecture -->
+<div class="slide slide-content" id="slide-4">
+  <h2>Architecture Overview</h2>
+  <div class="two-col">
+    <div>
+      <div class="file-tree">
+        <span class="folder">src/</span><br/>
+        &nbsp;&nbsp;<span class="folder">app/</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="accent">page.tsx</span> &larr; Server Component (dashboard)<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">loading.tsx, error.tsx, not-found.tsx</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">api/tasks/</span> &larr; REST API routes<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">tasks/[id]/</span> &larr; Detail page<br/>
+        &nbsp;&nbsp;<span class="folder">components/</span> &larr; Client Components<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">TaskBoard, TaskCard, TaskFilter</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">CreateTaskModal, EditTaskForm</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ThemeProvider, ThemeToggle, Toast</span><br/>
+        &nbsp;&nbsp;<span class="folder">db/</span> &larr; Drizzle schema + connection<br/>
+        &nbsp;&nbsp;<span class="folder">types/</span> &larr; Shared TypeScript types<br/>
+        &nbsp;&nbsp;<span class="folder">lib/</span> &larr; Utility functions<br/>
+        &nbsp;&nbsp;<span class="accent">middleware.ts</span> &larr; Request logging
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Data Flow</h3>
+        <ul>
+          <li>Dashboard (Server Component) fetches tasks directly from Neon DB</li>
+          <li>Passes data to Client Components for interactivity</li>
+          <li>Mutations go through API routes (/api/tasks)</li>
+          <li>router.refresh() revalidates server data after mutations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Key Technical Decisions -->
+<div class="slide slide-content" id="slide-5">
+  <h2>Key Technical Decisions</h2>
+  <div class="compare">
+    <div class="compare-box">
+      <h3>Server vs. Client Components</h3>
+      <p>Pages are <strong>Server Components</strong> &mdash; fetch data at the server, no client-side loading waterfalls, DB credentials stay secure. Interactive parts (board, forms, filters) are <strong>Client Components</strong>.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Drizzle ORM + Neon</h3>
+      <p><strong>Drizzle</strong> gives type-safe queries with inferred TypeScript types from the schema. <strong>Neon</strong> uses HTTP-based serverless driver &mdash; no connection pooling needed, works perfectly with Vercel edge.</p>
+    </div>
+    <div class="compare-box">
+      <h3>URL Search Params for Filtering</h3>
+      <p>Filters are stored in <strong>URL params</strong> (?status=todo&priority=high). This makes filtered views <strong>shareable and bookmarkable</strong>. Server reads params and filters before rendering.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Optimistic UI with useOptimistic</h3>
+      <p>Status changes update the UI <strong>instantly</strong> using React 19's useOptimistic + useTransition. If the API fails, the UI reverts. Toast notifications confirm success/failure.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Stretch Goals Completed -->
+<div class="slide slide-content" id="slide-6">
+  <h2>Stretch Goals Completed</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li><span class="highlight">Middleware</span> &mdash; Request logging with timestamp, method, path, and duration headers</li>
+        <li><span class="highlight">Optimistic UI</span> &mdash; useOptimistic + useTransition for instant status changes on the board</li>
+        <li><span class="highlight">Fine-grained Suspense</span> &mdash; Separate boundaries for filter bar and board with skeleton fallbacks</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li><span class="highlight">Advanced filtering</span> &mdash; Debounced search (300ms), sort dropdown, active filter count badge, URL param persistence</li>
+        <li><span class="highlight">Dark mode toggle</span> &mdash; Light / Dark / System with localStorage persistence and no flash on load</li>
+        <li><span class="highlight">Glassmorphism UI</span> &mdash; Frosted glass design with backdrop-blur, gradient backgrounds, smooth animations</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Challenges & Solutions -->
+<div class="slide slide-content" id="slide-7">
+  <h2>Challenges &amp; Solutions</h2>
+  <div class="compare">
+    <div class="compare-box">
+      <h3>Tailwind v4 Dark Mode</h3>
+      <p>The built-in dark variant uses media queries. Switching to class-based required <code style="color:#c084fc">@variant dark</code> (not @custom-variant) to <strong>override</strong> the built-in variant rather than creating a duplicate.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Next.js 15 Async Params</h3>
+      <p>In Next.js 15+, <code style="color:#c084fc">params</code> and <code style="color:#c084fc">searchParams</code> are now Promises. Had to await them in Server Components &mdash; a breaking change from Next.js 14.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Mobile Responsiveness</h3>
+      <p>Filter bar overflowed on small screens. Fixed with full-width search on mobile, 3-column grid for dropdowns, and bottom-sheet modal pattern for the create form.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Test Isolation</h3>
+      <p>React Testing Library renders accumulated across tests in Vitest. Added explicit <code style="color:#c084fc">cleanup()</code> in afterEach to prevent duplicate element errors.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: What I'd Do With More Time -->
+<div class="slide slide-content" id="slide-8">
+  <h2>What I'd Do With More Time</h2>
+  <div class="two-col">
+    <div class="card">
+      <h3>Features</h3>
+      <ul>
+        <li>Drag-and-drop between columns (dnd-kit)</li>
+        <li>User authentication with NextAuth.js</li>
+        <li>Due dates and calendar view</li>
+        <li>Task comments and activity log</li>
+        <li>Real-time updates with WebSockets</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Technical Improvements</h3>
+      <ul>
+        <li>Database-level filtering instead of in-memory</li>
+        <li>Server Actions instead of API routes for mutations</li>
+        <li>E2E tests with Playwright</li>
+        <li>Pagination for large task lists</li>
+        <li>CI/CD pipeline with automated testing</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Summary -->
+<div class="slide slide-end" id="slide-9">
+  <p class="subtitle">Task Tracker Dashboard</p>
+  <h1>Thank You</h1>
+  <p class="subtitle" style="margin-top: 12px;">All MVP requirements met + all 5 stretch goals completed</p>
+  <div class="tags" style="margin-top: 32px;">
+    <span class="tag">14 Tests Passing</span>
+    <span class="tag">Mobile Responsive</span>
+    <span class="tag">Glassmorphism UI</span>
+    <span class="tag">Dark Mode</span>
+    <span class="tag">Optimistic Updates</span>
+  </div>
+  <p style="margin-top: 40px; color: #475569; font-size: 0.95rem;">Questions?</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prev()">&#8592;</button>
+  <button onclick="next()">&#8594;</button>
+</div>
+<div class="slide-counter"><span id="current">1</span> / <span id="total">9</span></div>
+
+<script>
+  let current = 1;
+  const total = 9;
+
+  function show(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('current').textContent = n;
+    current = n;
+  }
+
+  function next() { if (current < total) show(current + 1); }
+  function prev() { if (current > 1) show(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+
+</body>
+</html>

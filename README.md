@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Tracker Dashboard
+
+A Kanban-style task management dashboard built with Next.js 15, TypeScript, Tailwind CSS, and Neon PostgreSQL.
+
+## Features
+
+- **Kanban Board** — Tasks organized in three columns: To Do, In Progress, Done
+- **CRUD Operations** — Create, view, edit, and delete tasks
+- **Search & Filter** — Filter tasks by status, priority, or search by title
+- **Responsive Design** — Works on desktop (3-column) and mobile (stacked)
+- **Server Components** — Data fetched server-side for fast initial loads
+- **Loading & Error States** — Skeleton loaders and error boundaries throughout
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript (strict mode)
+- **Styling:** Tailwind CSS v4
+- **Database:** Neon (serverless PostgreSQL)
+- **ORM:** Drizzle ORM
+- **Testing:** Vitest + React Testing Library
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Neon](https://neon.tech) account (free tier works)
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd task-tracker
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up the database**
+   - Create a new project in the [Neon Console](https://console.neon.tech)
+   - Copy your connection string
+
+4. **Configure environment variables**
+   Create a `.env.local` file in the project root:
+   ```
+   DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
+   ```
+
+5. **Push the database schema**
+   ```bash
+   npm run db:push
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000)
+
+### Running Tests
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture Decisions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Why Server Components for Data Fetching
+The dashboard page is a Server Component that fetches tasks directly from the database. This avoids client-side loading waterfalls, provides instant data on page load, and keeps database credentials server-side. Interactive parts (TaskBoard, filters, modals) are Client Components.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Why Drizzle ORM
+Drizzle provides type-safe database queries with a minimal runtime footprint. Schema is defined in TypeScript, giving us inferred types (`InferSelectModel`) that stay in sync with the database. `drizzle-kit push` handles schema migrations without migration files.
 
-## Learn More
+### Why Neon
+Neon's serverless PostgreSQL driver (`@neondatabase/serverless`) uses HTTP-based queries, which work well with serverless environments like Vercel. No connection pooling needed.
 
-To learn more about Next.js, take a look at the following resources:
+### Search & Filtering via URL Params
+Filters use URL search params (`?status=todo&priority=high`) so filtered views are shareable and bookmarkable. The server reads these params and filters data before rendering.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Trade-offs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **No drag-and-drop:** Kept the Kanban board simple with click-to-edit status changes instead of drag-and-drop, to stay within scope.
+- **No authentication:** Tasks are shared globally. Auth could be added with NextAuth.js.
+- **Server-side filtering:** All tasks are fetched then filtered in-memory. For large datasets, filtering should happen at the database query level.
+- **No optimistic updates:** Mutations wait for the server response before updating the UI. This is simpler and guarantees data consistency.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push to GitHub
+2. Import the repo in [Vercel](https://vercel.com)
+3. Add `DATABASE_URL` as an environment variable in Vercel project settings
+4. Deploy
