@@ -322,11 +322,12 @@
   <h2>What I Built</h2>
   <ul>
     <li><strong>Kanban dashboard</strong> with 3 columns: To Do, In Progress, Done</li>
+    <li><strong>Summary counts</strong> &mdash; at-a-glance task totals per status in the dashboard header</li>
     <li><strong>Full CRUD</strong> &mdash; create, view, edit, and delete tasks</li>
     <li><strong>Search &amp; filter</strong> by status, priority, and keyword via URL params</li>
     <li><strong>Sort</strong> by newest, oldest, or priority level</li>
     <li><strong>Task detail pages</strong> with dynamic routing (/tasks/[id])</li>
-    <li><strong>Glassmorphism UI</strong> &mdash; responsive on mobile and desktop</li>
+    <li><strong>Glassmorphism UI</strong> &mdash; responsive on mobile (full-screen modal) and desktop</li>
     <li><strong>Dark mode toggle</strong> with system, light, and dark options</li>
     <li><strong>14 passing tests</strong> (Vitest + React Testing Library)</li>
   </ul>
@@ -336,8 +337,8 @@
 <div class="slide slide-content" id="slide-3">
   <h2>Live Demo</h2>
   <p style="margin-bottom: 20px; font-size: 1rem; color: #94a3b8;">Deployed at <a href="https://task-tracker-one-puce.vercel.app" target="_blank" style="color: #a5b4fc; text-decoration: underline;">task-tracker-one-puce.vercel.app</a></p>
-  <div class="demo-step"><div class="demo-num">1</div><div class="demo-text">Open the <strong>dashboard</strong> &mdash; show 3-column Kanban board</div></div>
-  <div class="demo-step"><div class="demo-num">2</div><div class="demo-text">Click <strong>"New Task"</strong> &mdash; create a task via modal form</div></div>
+  <div class="demo-step"><div class="demo-num">1</div><div class="demo-text">Open the <strong>dashboard</strong> &mdash; show summary counts and 3-column Kanban board</div></div>
+  <div class="demo-step"><div class="demo-num">2</div><div class="demo-text">Click <strong>"New Task"</strong> &mdash; full-screen form on mobile, floating modal on desktop</div></div>
   <div class="demo-step"><div class="demo-num">3</div><div class="demo-text">Use <strong>quick-move buttons</strong> to change status (optimistic update)</div></div>
   <div class="demo-step"><div class="demo-num">4</div><div class="demo-text">Click a card &rarr; <strong>task detail page</strong> with edit form</div></div>
   <div class="demo-step"><div class="demo-num">5</div><div class="demo-text"><strong>Edit</strong> the task, save &mdash; redirected back with toast notification</div></div>
@@ -420,7 +421,7 @@
       <ul>
         <li><span class="highlight">Advanced filtering</span> &mdash; Debounced search (300ms), sort dropdown, active filter count badge, URL param persistence</li>
         <li><span class="highlight">Dark mode toggle</span> &mdash; Light / Dark / System with localStorage persistence and no flash on load</li>
-        <li><span class="highlight">Glassmorphism UI</span> &mdash; Frosted glass design with backdrop-blur, gradient backgrounds, smooth animations</li>
+        <li><span class="highlight">Glassmorphism UI</span> &mdash; Frosted glass design with backdrop-blur, gradient backgrounds, static cards (no hover jitter)</li>
       </ul>
     </div>
   </div>
@@ -444,7 +445,7 @@
     </div>
     <div class="compare-box">
       <h3>Mobile Responsiveness</h3>
-      <p>Filter bar overflowed on small screens. Fixed with full-width search on mobile, 3-column grid for dropdowns, and bottom-sheet modal pattern for the create form.</p>
+      <p>Modal was trapped inside a <code style="color:#c084fc">backdrop-filter</code> parent, breaking <code style="color:#c084fc">fixed</code> positioning. Fixed with <strong>React Portal</strong> to render on body. Full-screen form on mobile, scroll-locked background, no hover animations for stable UI.</p>
     </div>
   </div>
 </div>
