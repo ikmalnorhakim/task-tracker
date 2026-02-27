@@ -75,13 +75,17 @@ export default function CreateTaskModal() {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center sm:p-4">
+          {/* Backdrop - only visible on desktop */}
           <div
-            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            className="hidden sm:block absolute inset-0 bg-black/30 backdrop-blur-sm"
             onClick={() => { setIsOpen(false); resetForm(); }}
           />
-          <div className="relative glass-card rounded-t-2xl sm:!rounded-2xl shadow-2xl w-full sm:max-w-md sm:mx-4 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:p-6 max-h-[85dvh] overflow-y-auto !transform-none pointer-events-auto">
-            <div className="flex items-center justify-between mb-4">
+
+          {/* Modal: full-screen on mobile, centered card on desktop */}
+          <div className="relative w-full h-full sm:h-auto sm:max-w-md sm:max-h-[85dvh] bg-[var(--background)] sm:glass-card sm:!rounded-2xl sm:shadow-2xl flex flex-col overflow-hidden !transform-none">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 sm:p-6 pb-0 sm:pb-0 shrink-0">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="w-8 h-8 rounded-xl bg-indigo-500/15 flex items-center justify-center">
                   <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +96,7 @@ export default function CreateTaskModal() {
               </h2>
               <button
                 onClick={() => { setIsOpen(false); resetForm(); }}
-                className="sm:hidden p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -100,92 +104,95 @@ export default function CreateTaskModal() {
               </button>
             </div>
 
-            {error && (
-              <div className="mb-4 p-3 bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl text-sm ring-1 ring-red-500/20">
-                {error}
-              </div>
-            )}
+            {/* Scrollable form area */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 pt-4">
+              {error && (
+                <div className="mb-4 p-3 bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl text-sm ring-1 ring-red-500/20">
+                  {error}
+                </div>
+              )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Title *
-                </label>
-                <input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className={inputClass}
-                  placeholder="Enter task title"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                  className={inputClass}
-                  placeholder="Enter task description (optional)"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Status
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Title *
                   </label>
-                  <select
-                    id="status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                  <input
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     className={inputClass}
-                  >
-                    {TASK_STATUSES.map((s) => (
-                      <option key={s} value={s}>{STATUS_LABELS[s]}</option>
-                    ))}
-                  </select>
+                    placeholder="Enter task title"
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="priority" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Priority
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Description
                   </label>
-                  <select
-                    id="priority"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
+                  <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={3}
                     className={inputClass}
-                  >
-                    {TASK_PRIORITIES.map((p) => (
-                      <option key={p} value={p}>{PRIORITY_LABELS[p]}</option>
-                    ))}
-                  </select>
+                    placeholder="Enter task description (optional)"
+                  />
                 </div>
-              </div>
 
-              <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => { setIsOpen(false); resetForm(); }}
-                  className="px-4 py-2.5 sm:py-2 text-sm font-medium text-gray-700 dark:text-gray-300 glass rounded-xl hover:shadow-md transition-all duration-200 text-center"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-4 py-2.5 sm:py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 disabled:opacity-50 rounded-xl shadow-lg shadow-indigo-500/25 transition-all duration-200"
-                >
-                  {isLoading ? "Creating..." : "Create Task"}
-                </button>
-              </div>
-            </form>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Status
+                    </label>
+                    <select
+                      id="status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      className={inputClass}
+                    >
+                      {TASK_STATUSES.map((s) => (
+                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="priority" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Priority
+                    </label>
+                    <select
+                      id="priority"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                      className={inputClass}
+                    >
+                      {TASK_PRIORITIES.map((p) => (
+                        <option key={p} value={p}>{PRIORITY_LABELS[p]}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setIsOpen(false); resetForm(); }}
+                    className="px-4 py-2.5 sm:py-2 text-sm font-medium text-gray-700 dark:text-gray-300 glass rounded-xl hover:shadow-md transition-all duration-200 text-center"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-4 py-2.5 sm:py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 disabled:opacity-50 rounded-xl shadow-lg shadow-indigo-500/25 transition-all duration-200"
+                  >
+                    {isLoading ? "Creating..." : "Create Task"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}
