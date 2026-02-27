@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { TASK_STATUSES, TASK_PRIORITIES, STATUS_LABELS, PRIORITY_LABELS } from "@/types/task";
 import { toast } from "./Toast";
@@ -18,6 +18,16 @@ export default function CreateTaskModal() {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("todo");
   const [priority, setPriority] = useState("medium");
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
 
   function resetForm() {
     setTitle("");
@@ -80,7 +90,7 @@ export default function CreateTaskModal() {
             className="absolute inset-0 bg-black/30 backdrop-blur-sm"
             onClick={() => { setIsOpen(false); resetForm(); }}
           />
-          <div className="relative glass-card rounded-t-2xl sm:!rounded-2xl shadow-2xl w-full sm:max-w-md sm:mx-4 p-5 sm:p-6 max-h-[90vh] overflow-y-auto !transform-none">
+          <div className="relative glass-modal rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md sm:mx-4 p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="w-8 h-8 rounded-xl bg-indigo-500/15 flex items-center justify-center">
