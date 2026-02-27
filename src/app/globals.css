@@ -154,3 +154,8 @@ body {
 .dark .glow-blue { box-shadow: 0 -2px 20px rgba(59, 130, 246, 0.25); }
 .dark .glow-amber { box-shadow: 0 -2px 20px rgba(245, 158, 11, 0.25); }
 .dark .glow-emerald { box-shadow: 0 -2px 20px rgba(16, 185, 129, 0.25); }
+
+/* Prevent hover transform on modal overlays */
+.glass-card.\!transform-none:hover {
+  transform: none !important;
+}
