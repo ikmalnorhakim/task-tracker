@@ -83,7 +83,7 @@ export default function CreateTaskModal() {
           />
 
           {/* Modal: full-screen on mobile, centered card on desktop */}
-          <div className="relative w-full h-full sm:h-auto sm:max-w-md sm:max-h-[85dvh] bg-[var(--background)] sm:glass-card sm:!rounded-2xl sm:shadow-2xl flex flex-col overflow-hidden !transform-none">
+          <div className="relative w-full h-full sm:h-auto sm:max-w-md sm:max-h-[85dvh] bg-[var(--background)] sm:glass-modal sm:rounded-2xl sm:shadow-2xl flex flex-col overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between p-4 sm:p-6 pb-0 sm:pb-0 shrink-0">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
