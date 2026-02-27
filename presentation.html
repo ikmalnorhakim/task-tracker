@@ -308,9 +308,9 @@
   <h1>Task Tracker Dashboard</h1>
   <p class="subtitle">A full-stack Kanban-style task management app</p>
   <div class="tags">
-    <span class="tag">Next.js 15</span>
+    <span class="tag">Next.js 16</span>
     <span class="tag">TypeScript</span>
-    <span class="tag">Tailwind CSS</span>
+    <span class="tag">Tailwind CSS v4</span>
     <span class="tag">Neon PostgreSQL</span>
     <span class="tag">Drizzle ORM</span>
     <span class="tag">Vercel</span>
@@ -335,6 +335,7 @@
 <!-- SLIDE 3: Live Demo Plan -->
 <div class="slide slide-content" id="slide-3">
   <h2>Live Demo</h2>
+  <p style="margin-bottom: 20px; font-size: 1rem; color: #94a3b8;">Deployed at <a href="https://task-tracker-one-puce.vercel.app" target="_blank" style="color: #a5b4fc; text-decoration: underline;">task-tracker-one-puce.vercel.app</a></p>
   <div class="demo-step"><div class="demo-num">1</div><div class="demo-text">Open the <strong>dashboard</strong> &mdash; show 3-column Kanban board</div></div>
   <div class="demo-step"><div class="demo-num">2</div><div class="demo-text">Click <strong>"New Task"</strong> &mdash; create a task via modal form</div></div>
   <div class="demo-step"><div class="demo-num">3</div><div class="demo-text">Use <strong>quick-move buttons</strong> to change status (optimistic update)</div></div>
@@ -434,16 +435,16 @@
       <p>The built-in dark variant uses media queries. Switching to class-based required <code style="color:#c084fc">@variant dark</code> (not @custom-variant) to <strong>override</strong> the built-in variant rather than creating a duplicate.</p>
     </div>
     <div class="compare-box">
-      <h3>Next.js 15 Async Params</h3>
+      <h3>Next.js 16 Async Params</h3>
       <p>In Next.js 15+, <code style="color:#c084fc">params</code> and <code style="color:#c084fc">searchParams</code> are now Promises. Had to await them in Server Components &mdash; a breaking change from Next.js 14.</p>
+    </div>
+    <div class="compare-box">
+      <h3>Vercel Deployment</h3>
+      <p>Vercel detected the framework as "Other" instead of Next.js, causing 404 on all routes. Fixed by adding <code style="color:#c084fc">vercel.json</code> with <code style="color:#c084fc">"framework": "nextjs"</code> to force correct detection.</p>
     </div>
     <div class="compare-box">
       <h3>Mobile Responsiveness</h3>
       <p>Filter bar overflowed on small screens. Fixed with full-width search on mobile, 3-column grid for dropdowns, and bottom-sheet modal pattern for the create form.</p>
-    </div>
-    <div class="compare-box">
-      <h3>Test Isolation</h3>
-      <p>React Testing Library renders accumulated across tests in Vitest. Added explicit <code style="color:#c084fc">cleanup()</code> in afterEach to prevent duplicate element errors.</p>
     </div>
   </div>
 </div>
@@ -481,13 +482,19 @@
   <h1>Thank You</h1>
   <p class="subtitle" style="margin-top: 12px;">All MVP requirements met + all 5 stretch goals completed</p>
   <div class="tags" style="margin-top: 32px;">
+    <span class="tag">Deployed on Vercel</span>
     <span class="tag">14 Tests Passing</span>
     <span class="tag">Mobile Responsive</span>
     <span class="tag">Glassmorphism UI</span>
     <span class="tag">Dark Mode</span>
     <span class="tag">Optimistic Updates</span>
   </div>
-  <p style="margin-top: 40px; color: #475569; font-size: 0.95rem;">Questions?</p>
+  <p style="margin-top: 32px; font-size: 1rem; color: #94a3b8;">
+    <a href="https://task-tracker-one-puce.vercel.app" target="_blank" style="color: #a5b4fc; text-decoration: underline;">task-tracker-one-puce.vercel.app</a>
+    &nbsp;&bull;&nbsp;
+    <a href="https://github.com/ikmalnorhakim/task-tracker" target="_blank" style="color: #a5b4fc; text-decoration: underline;">github.com/ikmalnorhakim/task-tracker</a>
+  </p>
+  <p style="margin-top: 28px; color: #475569; font-size: 0.95rem;">Questions?</p>
 </div>
 
 <!-- Navigation -->

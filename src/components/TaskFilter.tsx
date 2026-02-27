@@ -66,7 +66,7 @@ export default function TaskFilter() {
     (currentSort ? 1 : 0);
 
   return (
-    <div className="glass rounded-2xl p-3 sm:p-4 shadow-sm">
+    <div className="glass-card !rounded-2xl p-3 sm:p-4">
       <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
         <div className="relative w-full sm:w-auto">
           <svg
@@ -123,7 +123,7 @@ export default function TaskFilter() {
         {activeFilterCount > 0 && (
           <button
             onClick={clearFilters}
-            className="inline-flex items-center justify-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors py-1"
+            className="inline-flex items-center justify-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors py-1 font-medium"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -46,15 +46,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <header className="glass-strong sticky top-0 z-40 shadow-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-              <a href="/" className="text-xl font-bold text-gray-900 dark:text-white">
+          <header className="sticky top-0 z-40 glass-strong border-b border-white/20 dark:border-white/5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+              <a href="/" className="flex items-center gap-2.5 text-lg font-bold text-gray-900 dark:text-white">
+                <span className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-sm shadow-lg shadow-indigo-500/30">
+                  T
+                </span>
                 Task Tracker
               </a>
               <ThemeToggle />
             </div>
           </header>
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
             {children}
           </main>
         </ThemeProvider>

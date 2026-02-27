@@ -80,9 +80,14 @@ export default function CreateTaskModal() {
             className="absolute inset-0 bg-black/30 backdrop-blur-sm"
             onClick={() => { setIsOpen(false); resetForm(); }}
           />
-          <div className="relative glass-strong rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md sm:mx-4 p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+          <div className="relative glass-card rounded-t-2xl sm:!rounded-2xl shadow-2xl w-full sm:max-w-md sm:mx-4 p-5 sm:p-6 max-h-[90vh] overflow-y-auto !transform-none">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <span className="w-8 h-8 rounded-xl bg-indigo-500/15 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </span>
                 Create New Task
               </h2>
               <button
